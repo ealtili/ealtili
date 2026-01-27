@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Document Viewer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #05040a;
+      color: #f5f5f5;
+      overflow: hidden;
+    }
+    .center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .screen { 
+      display: none; 
+      width: 100vw; 
+      height: 100vh; 
+    }
+    #lady-screen {
+      background: radial-gradient(circle at center, #1a1a2e 0%, #05040a 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #lady-screen img {
+      max-width: 320px;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    }
+    #lady-screen p {
+      color: #ddd;
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+    #ransom-screen {
+      background: #05040a;
+      color: #00ff88;
+      font-family: "Courier New", monospace;
+      padding: 20px;
+    }
+    .terminal {
+      border: 1px solid #00ff88;
+      padding: 20px;
+      height: 80vh;
+      overflow: hidden;
+      position: relative;
+    }
+    .terminal-header {
+      color: #f44336;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .log-line {
+      white-space: nowrap;
+      font-size: 0.9rem;
+    }
+    .loading-bar {
+      margin-top: 20px;
+      width: 100%;
+      height: 18px;
+      border: 1px solid #00ff88;
+      padding: 1px;
+    }
+    .loading-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #00ff88, #00bcd4);
+      transition: width 0.25s linear;
+    }
+    .percent {
+      margin-top: 5px;
+      font-size: 0.85rem;
+    }
+    .heartbeat-container {
+      margin-top: 30px;
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid #00ff88;
+      border-bottom: 1px solid #00ff88;
+    }
+    .heartbeat-line {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 200%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #00ff88 10%, #00ff88 25%, transparent 30%, transparent 60%, #00ff88 70%, transparent 80%, transparent 100%);
+      animation: heartbeat-move 2s linear infinite;
+    }
+    @keyframes heartbeat-move {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    #final-screen {
+      background: radial-gradient(circle at center, #0b1320 0%, #020308 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      color: #e0f7fa;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #final-screen h1 {
+      font-size: 2rem;
+      color: #00e676;
+    }
+    #final-screen p {
+      max-width: 480px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .btn {
+      margin-top: 10px;
+      padding: 10px 18px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      background: #00e676;
+      color: #021016;
+      font-weight: bold;
+      font-size: 0.95rem;
+    }
+    .btn:hover {
+      background: #00c853;
+    }
+    .note {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="lady-screen" class="screen" style="display:flex;">
+    <div class="center">
+      <img src="https://thumbs.dreamstime.com/b/beautiful-gothic-woman-sexy-dress-autumn-forest-colored-63723380.jpg" alt="Lady" />
+      <p>Loading secure document… please wait.</p>
+    </div>
+  </div>
+
+  <div id="ransom-screen" class="screen">
+    <div class="terminal">
+      <div class="terminal-header">SYSTEM COMPROMISED</div>
+      <div id="log"></div>
+      <div class="loading-bar">
+        <div class="loading-fill" id="loading-fill"></div>
+      </div>
+      <div class="percent" id="percent">Encrypting files: 0%</div>
+      <div class="heartbeat-container">
+        <div class="heartbeat-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="final-screen" class="screen">
+    <h1>You have been pwned… not really 😄</h1>
+    <p>
+      Relax, this was only a prank to **check your heartbeat**.  
+      No files were touched, encrypted, or accessed in any way.
+    </p>
+    <button class="btn" onclick="location.reload()">Try again on someone else</button>
+    <div class="note">
+      Harmless visual joke only. 100% safe, no data is read, changed, or stored.
+    </div>
+  </div>
+
+  <script>
+    const ladyScreen = document.getElementById("lady-screen");
+    const ransomScreen = document.getElementById("ransom-screen");
+    const finalScreen = document.getElementById("final-screen");
+    const logDiv = document.getElementById("log");
+    const loadingFill = document.getElementById("loading-fill");
+    const percentText = document.getElementById("percent");
+
+    const fakeLogLines = [
+      "[+] Initializing secure connection...",
+      "[+] Verifying user identity...",
+      "[!] Unexpected anomaly detected.",
+      "[!] Escalating privileges...",
+      "[+] Accessing imaginary filesystem...",
+      "[+] Enumerating fake files...",
+      "[+] Launching visual encryption routine...",
+      "[!] WARNING: Heartbeat spike detected.",
+      "[+] Calibrating prank level...",
+      "[+] Finalizing harmless scare sequence..."
+    ];
+
+    function showScreen(screen) {
+      [ladyScreen, ransomScreen, finalScreen].forEach(s => s.style.display = "none");
+      screen.style.display = "flex";
+    }
+
+    setTimeout(() => {
+      showScreen(ransomScreen);
+      startFakeEncryption();
+    }, 4000);
+
+    function startFakeEncryption() {
+      let idx = 0;
+      let progress = 0;
+
+      const logInterval = setInterval(() => {
+        if (idx < fakeLogLines.length) {
+          const line = document.createElement("div");
+          line.className = "log-line";
+          line.textContent = fakeLogLines[idx++];
+          logDiv.appendChild(line);
+          logDiv.scrollTop = logDiv.scrollHeight;
+        } else {
+          clearInterval(logInterval);
+        }
+      }, 600);
+
+      const progressInterval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(progressInterval);
+          percentText.textContent = "Encrypting files: 100%";
+          setTimeout(() => {
+            showScreen(finalScreen);
+          }, 1500);
+        } else {
+          progress += Math.floor(Math.random() * 8) + 3;
+          if (progress > 100) progress = 100;
+          loadingFill.style.width = progress + "%";
+          percentText.textContent = "Encrypting files: " + progress + "%";
+        }
+      }, 400);
+    }
+  </script>
+</body>
+</html>
