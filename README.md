@@ -29,7 +29,7 @@
 ## Connect
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-ealtili-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ealtili)
-[![Medium](https://img.shields.io/badge/Medium-@ealtili-000000?logo=medium&logoColor=white)](https://ealtili.medium.com)
+[![Medium](https://img.shields.io/badge/Medium-ealtili-0A66C2?logo=medium&logoColor=white)](https://ealtili.medium.com)
 [![Portfolio](https://img.shields.io/badge/Portfolio-ealtili.github.io-informational)](https://ealtili.github.io)
 
 📅 [Book a 15-minute call](https://cal.com/ealtili/15min)
